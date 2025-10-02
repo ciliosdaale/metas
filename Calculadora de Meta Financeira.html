@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Ganhos - Alcance Suas Metas</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #9c27b0;
+            --secondary-color: #7b1fa2;
+            --accent-color: #e91e63;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --light-color: #f3e5f5;
+            --dark-color: #4a148c;
+            --text-color: #333;
+            --border-color: #ddd;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 10px;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 20px 15px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            z-index: 1;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .tagline {
+            font-size: 1rem;
+            margin: 0 auto 15px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .motivational-message {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 12px;
+            font-style: italic;
+            position: relative;
+            z-index: 2;
+            font-size: 0.9rem;
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .btn {
+            padding: 12px 16px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 0.85rem;
+        }
+        
+        .btn-primary {
+            background-color: white;
+            color: var(--primary-color);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-secondary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .btn-secondary:active {
+            background-color: #d81b60;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-export {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .btn-export:active {
+            background-color: #388e3c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .btn-danger:active {
+            background-color: #d32f2f;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .dashboard {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .goal-card, .progress-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .goal-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .goal-input-container {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1.1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="number"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        .progress-bar-container {
+            margin-top: 15px;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), #8bc34a);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+        
+        .progress-fill::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-image: linear-gradient(-45deg, rgba(255,255,255,0.2) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, transparent 75%, transparent);
+            background-size: 20px 20px;
+            animation: move 1s linear infinite;
+        }
+        
+        @keyframes move {
+            0% { background-position: 0 0; }
+            100% { background-position: 20px 0; }
+        }
+        
+        .achievement-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: var(--light-color);
+            border-radius: 10px;
+        }
+        
+        .badge-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--warning-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .calculator {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .service-category {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .service-category:last-child {
+            border-bottom: none;
+        }
+        
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .commission-badge {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        
+        .commission-badge.high {
+            background-color: var(--success-color);
+        }
+        
+        .service-item {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: var(--light-color);
+            border-radius: 10px;
+            transition: transform 0.2s;
+        }
+        
+        .service-item:active {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-info {
+            flex: 1;
+            margin-bottom: 10px;
+        }
+        
+        .service-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+        
+        .service-details {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .service-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .slider-container {
+            flex: 1;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+        }
+        
+        .quantity-display {
+            width: 50px;
+            text-align: center;
+            font-weight: 600;
+            background-color: white;
+            padding: 8px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 0.9rem;
+        }
+        
+        .results {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .results h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        
+        .result-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .result-card {
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .result-card.primary {
+            background-color: var(--light-color);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .result-card.secondary {
+            background-color: #e8f5e9;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .result-card.complementary {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .result-card.total {
+            background-color: #fff8e1;
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 8px 0;
+        }
+        
+        .highlight {
+            color: var(--primary-color);
+        }
+        
+        .comparison {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 10px;
+        }
+        
+        .comparison h3 {
+            margin-bottom: 12px;
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+        }
+        
+        .comparison-content {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .comparison-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comparison-item:last-child {
+            border-bottom: none;
+        }
+        
+        .comparison-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        
+        .positive {
+            color: var(--success-color);
+        }
+        
+        .negative {
+            color: #f44336;
+        }
+        
+        .suggestion-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--light-color);
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .suggestion-box h3 {
+            margin-bottom: 12px;
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+        }
+        
+        .tips {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .tip-card {
+            background-color: white;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tip-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+        
+        .motivational-quote {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            font-style: italic;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .export-notice {
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #e8f5e9;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            display: none;
+        }
+        
+        .daily-goal {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .daily-goal:last-child {
+            border-bottom: none;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 700px;
+            }
+            
+            .controls {
+                flex-direction: row;
+            }
+            
+            .btn {
+                flex: 1;
+                font-size: 0.8rem;
+                padding: 10px 14px;
+            }
+            
+            .dashboard {
+                flex-direction: row;
+            }
+            
+            .goal-card, .progress-card {
+                flex: 1;
+            }
+            
+            .result-grid {
+                flex-direction: row;
+            }
+            
+            .result-card {
+                flex: 1;
+            }
+            
+            .service-item {
+                flex-direction: row;
+                align-items: center;
+            }
+            
+            .service-info {
+                margin-bottom: 0;
+            }
+            
+            .service-controls {
+                width: 60%;
+            }
+            
+            .comparison-content {
+                flex-direction: row;
+            }
+            
+            .comparison-item {
+                flex-direction: column;
+                text-align: center;
+                border-bottom: none;
+                border-right: 1px solid #e0e0e0;
+                padding: 0 10px;
+            }
+            
+            .comparison-item:last-child {
+                border-right: none;
+            }
+            
+            .tips {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="export-container">
+        <header>
+            <h1>Calculadora de Metas Financeiras</h1>
+            <p class="tagline">Alcance seus objetivos e realize seus sonhos!</p>
+            <div class="motivational-message" id="motivational-message">
+                Você tem todo o potencial para alcançar suas metas! Vamos descobrir juntas como.
+            </div>
+            
+            <div class="controls">
+                <button class="btn btn-primary" id="save-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
+                    </svg>
+                    Salvar
+                </button>
+                <button class="btn btn-danger" id="reset-sliders-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                    </svg>
+                    Zerar Sliders
+                </button>
+                <button class="btn btn-secondary" id="refresh-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                    </svg>
+                    Reiniciar
+                </button>
+                <button class="btn btn-export" id="export-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                    </svg>
+                    Exportar
+                </button>
+            </div>
+        </header>
+        
+        <div class="dashboard">
+            <div class="goal-card">
+                <div class="goal-input-container">
+                    <label for="monthly-goal">Meta Mensal (R$)</label>
+                    <input type="number" id="monthly-goal" min="0" step="100" value="5000">
+                </div>
+                
+                <div class="progress-bar-container">
+                    <div class="progress-info">
+                        <span>Progresso</span>
+                        <span id="progress-percentage">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div class="achievement-badge" id="achievement-badge">
+                    <div class="badge-icon">★</div>
+                    <div>
+                        <strong>Meta Definida</strong>
+                        <p>Estabeleça uma meta para começar</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="progress-card">
+                <h3>Seu Progresso</h3>
+                <div class="result-value highlight" id="total-commissions">R$ 0,00</div>
+                <p>Renda mensal estimada</p>
+                
+                <div class="comparison-content" style="margin-top: 15px;">
+                    <div class="comparison-item">
+                        <div>Meta Mensal</div>
+                        <div class="comparison-value">R$ <span id="goal-display">5.000,00</span></div>
+                    </div>
+                    <div class="comparison-item">
+                        <div>Meta Diária</div>
+                        <div class="comparison-value">R$ <span id="daily-goal">250,00</span></div>
+                    </div>
+                    <div class="comparison-item">
+                        <div>Diferença</div>
+                        <div class="comparison-value" id="difference-display">R$ 0,00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <section class="calculator">
+            <div class="service-category">
+                <div class="category-header">
+                    <h3>Serviços Principais</h3>
+                    <span class="commission-badge">40%</span>
+                </div>
+                <p>Base do seu negócio</p>
+                
+                <div class="service-item">
+                    <div class="service-info">
+                        <div class="service-name">Alongamento de Cílios (Colocação)</div>
+                        <div class="service-details">R$ 250,00 | Comissão: R$ 100,00</div>
+                    </div>
+                    <div class="service-controls">
+                        <div class="slider-container">
+                            <input type="range" id="service1" min="0" max="50" value="10" class="slider">
+                        </div>
+                        <div class="quantity-display" id="qty1">10</div>
+                    </div>
+                </div>
+                
+                <div class="service-item">
+                    <div class="service-info">
+                        <div class="service-name">Alongamento de Cílios (Manutenção)</div>
+                        <div class="service-details">R$ 160,00 | Comissão: R$ 64,00</div>
+                    </div>
+                    <div class="service-controls">
+                        <div class="slider-container">
+                            <input type="range" id="service2" min="0" max="50" value="15" class="slider">
+                        </div>
+                        <div class="quantity-display" id="qty2">15</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="service-category">
+                <div class="category-header">
+                    <h3>Serviços de Alto Valor</h3>
+                    <span class="commission-badge high">60%</span>
+                </div>
+                <p>Maximize seus ganhos</p>
+                
+                <div class="service-item">
+                    <div class="service-info">
+                        <div class="service-name">Design de Sobrancelhas</div>
+                        <div class="service-details">R$ 80,00 | Comissão: R$ 48,00</div>
+                    </div>
+                    <div class="service-controls">
+                        <div class="slider-container">
+                            <input type="range" id="service3" min="0" max="50" value="5" class="slider">
+                        </div>
+                        <div class="quantity-display" id="qty3">5</div>
+                    </div>
+                </div>
+                
+                <div class="service-item">
+                    <div class="service-info">
+                        <div class="service-name">Design + Buço</div>
+                        <div class="service-details">R$ 130,00 | Comissão: R$ 78,00</div>
+                    </div>
+                    <div class="service-controls">
+                        <div class="slider-container">
+                            <input type="range" id="service4" min="0" max="50" value="5" class="slider">
+                        </div>
+                        <div class="quantity-display" id="qty4">5</div>
+                    </div>
+                </div>
+                
+                <div class="service-item">
+                    <div class="service-info">
+                        <div class="service-name">Buço</div>
+                        <div class="service-details">R$ 50,00 | Comissão: R$ 30,00</div>
+                    </div>
+                    <div class="service-controls">
+                        <div class="slider-container">
+                            <input type="range" id="service5" min="0" max="50" value="5" class="slider">
+                        </div>
+                        <div class="quantity-display" id="qty5">5</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="service-category">
+                <div class="category-header">
+                    <h3>Serviços Complementares</h3>
+                    <span class="commission-badge">Variados</span>
+                </div>
+                <p>Agregam valor ao portfólio</p>
+                
+                <div class="service-item">
+                    <div class="service-info">
+                        <div class="service-name">Design com Tintura</div>
+                        <div class="service-details">R$ 130,00 | Comissão: R$ 52,00</div>
+                    </div>
+                    <div class="service-controls">
+                        <div class="slider-container">
+                            <input type="range" id="service6" min="0" max="50" value="5" class="slider">
+                        </div>
+                        <div class="quantity-display" id="qty6">5</div>
+                    </div>
+                </div>
+                
+                <div class="service-item">
+                    <div class="service-info">
+                        <div class="service-name">Brow Lamination</div>
+                        <div class="service-details">R$ 230,00 | Comissão: R$ 92,00</div>
+                    </div>
+                    <div class="service-controls">
+                        <div class="slider-container">
+                            <input type="range" id="service7" min="0" max="50" value="5" class="slider">
+                        </div>
+                        <div class="quantity-display" id="qty7">5</div>
+                    </div>
+                </div>
+                
+                <div class="service-item">
+                    <div class="service-info">
+                        <div class="service-name">Lash Lifting</div>
+                        <div class="service-details">R$ 230,00 | Comissão: R$ 92,00</div>
+                    </div>
+                    <div class="service-controls">
+                        <div class="slider-container">
+                            <input type="range" id="service8" min="0" max="50" value="5" class="slider">
+                        </div>
+                        <div class="quantity-display" id="qty8">5</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="results">
+            <h2>Resultados da Sua Estratégia</h2>
+            
+            <div class="result-grid">
+                <div class="result-card primary">
+                    <h3>Principais (40%)</h3>
+                    <div class="result-value" id="primary-total">R$ 0,00</div>
+                    <p>Comissões</p>
+                </div>
+                
+                <div class="result-card secondary">
+                    <h3>Alto Valor (60%)</h3>
+                    <div class="result-value" id="secondary-total">R$ 0,00</div>
+                    <p>Comissões</p>
+                </div>
+                
+                <div class="result-card complementary">
+                    <h3>Complementares</h3>
+                    <div class="result-value" id="complementary-total">R$ 0,00</div>
+                    <p>Comissões</p>
+                </div>
+            </div>
+            
+            <div class="suggestion-box">
+                <h3>Como Atingir Sua Meta</h3>
+                <p>Para alcançar R$ <span id="goal-explanation">5.000,00</span>, foque em serviços de 60%:</p>
+                
+                <div class="tips">
+                    <div class="tip-card">
+                        <h4>📈 Foque em 60%</h4>
+                        <p>Aumente em <span id="suggestion-design">X</span> serviços de Design ou <span id="suggestion-combo">Y</span> de Design + Buço</p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <h4>🔄 Combine Serviços</h4>
+                        <p>Ofereça pacotes com serviços de 60%</p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <h4>🎯 Meta Diária</h4>
+                        <p>Busque R$ <span id="daily-target">250,00</span> por dia</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="motivational-quote" id="motivational-quote">
+                "O sucesso não é acidental. É trabalho duro, perseverança e amor pelo que faz." - Pelé
+            </div>
+        </section>
+        
+        <div class="export-notice" id="export-notice">
+            Imagem exportada com sucesso! Verifique sua pasta de downloads.
+        </div>
+    </div>
+
+    <script>
+        // Preços e comissões dos serviços
+        const services = [
+            { id: 1, name: "Alongamento de Cílios (Colocação)", price: 250, commission: 0.4 },
+            { id: 2, name: "Alongamento de Cílios (Manutenção)", price: 160, commission: 0.4 },
+            { id: 3, name: "Design de Sobrancelhas", price: 80, commission: 0.6 },
+            { id: 4, name: "Design de Sobrancelhas + Buço", price: 130, commission: 0.6 },
+            { id: 5, name: "Buço", price: 50, commission: 0.6 },
+            { id: 6, name: "Design de Sobrancelhas com Tintura", price: 130, commission: 0.4 },
+            { id: 7, name: "Brow Lamination", price: 230, commission: 0.4 },
+            { id: 8, name: "Lash Lifting", price: 230, commission: 0.4 }
+        ];
+
+        // Valores iniciais
+        const initialValues = {
+            monthlyGoal: 5000,
+            sliders: [10, 15, 5, 5, 5, 5, 5, 5]
+        };
+
+        // Mensagens motivacionais
+        const motivationalMessages = [
+            { threshold: 0, message: "Você tem todo o potencial para alcançar suas metas! Vamos descobrir juntas como." },
+            { threshold: 0.25, message: "Você já está no caminho! Pequenos ajustes podem fazer uma grande diferença." },
+            { threshold: 0.5, message: "Metade do caminho percorrido! Continue assim e você alcançará sua meta." },
+            { threshold: 0.75, message: "Está quase lá! Mais um esforço e você superará sua meta." },
+            { threshold: 1, message: "Parabéns! Você alcançou sua meta. Que tal estabelecer uma nova?" },
+            { threshold: 1.2, message: "Incrível! Você superou sua meta. Seu talento está rendendo frutos!" },
+            { threshold: 2, message: "ESPETACULAR! Você mais que DOBROU sua meta! Você é uma verdadeira estrela! ✨" }
+        ];
+
+        const motivationalQuotes = [
+            "A persistência é o caminho do êxito. - Charles Chaplin",
+            "O sucesso nasce do querer, da determinação e persistência em se chegar a um objetivo. - Top Gun",
+            "Determinação, coragem e autoconfiança são fatores decisivos para o sucesso. - Zig Ziglar",
+            "O sucesso não é final, o fracasso não é fatal: é a coragem de continuar que conta. - Winston Churchill",
+            "A única maneira de fazer um excelente trabalho é amar o que você faz. - Steve Jobs",
+            "Não espere por circunstâncias ideais. Crie elas. - Desconhecido"
+        ];
+
+        // Elementos DOM
+        const monthlyGoalInput = document.getElementById('monthly-goal');
+        const sliders = document.querySelectorAll('.slider');
+        const quantityDisplays = document.querySelectorAll('.quantity-display');
+        const refreshBtn = document.getElementById('refresh-btn');
+        const saveBtn = document.getElementById('save-btn');
+        const exportBtn = document.getElementById('export-btn');
+        const resetSlidersBtn = document.getElementById('reset-sliders-btn');
+        const exportNotice = document.getElementById('export-notice');
+        const progressFill = document.getElementById('progress-fill');
+        const progressPercentage = document.getElementById('progress-percentage');
+        const achievementBadge = document.getElementById('achievement-badge');
+        const motivationalMessageEl = document.getElementById('motivational-message');
+        const motivationalQuoteEl = document.getElementById('motivational-quote');
+        const dailyGoalEl = document.getElementById('daily-goal');
+        const dailyTargetEl = document.getElementById('daily-target');
+        
+        const primaryTotalEl = document.getElementById('primary-total');
+        const secondaryTotalEl = document.getElementById('secondary-total');
+        const complementaryTotalEl = document.getElementById('complementary-total');
+        const totalCommissionsEl = document.getElementById('total-commissions');
+        
+        const goalDisplayEl = document.getElementById('goal-display');
+        const differenceDisplayEl = document.getElementById('difference-display');
+        
+        const goalExplanationEl = document.getElementById('goal-explanation');
+        const suggestionDesignEl = document.getElementById('suggestion-design');
+        const suggestionComboEl = document.getElementById('suggestion-combo');
+
+        // Formatar número para moeda brasileira
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('pt-BR', { 
+                style: 'currency', 
+                currency: 'BRL',
+                minimumFractionDigits: 2
+            }).format(value);
+        }
+
+        // Calcular meta diária (considerando 20 dias úteis)
+        function calculateDailyGoal(monthlyGoal) {
+            return monthlyGoal / 20;
+        }
+
+        // Atualizar meta diária
+        function updateDailyGoal() {
+            const monthlyGoal = parseFloat(monthlyGoalInput.value);
+            const dailyGoal = calculateDailyGoal(monthlyGoal);
+            dailyGoalEl.textContent = formatCurrency(dailyGoal).replace('R$', '').trim();
+            dailyTargetEl.textContent = formatCurrency(dailyGoal).replace('R$', '').trim();
+        }
+
+        // Atualizar mensagem motivacional com base no progresso
+        function updateMotivationalMessage(progress) {
+            let message = motivationalMessages[0].message;
+            
+            for (let i = motivationalMessages.length - 1; i >= 0; i--) {
+                if (progress >= motivationalMessages[i].threshold) {
+                    message = motivationalMessages[i].message;
+                    break;
+                }
+            }
+            
+            motivationalMessageEl.textContent = message;
+            
+            // Atualizar mensagem de quote aleatoriamente
+            const randomQuoteIndex = Math.floor(Math.random() * motivationalQuotes.length);
+            motivationalQuoteEl.textContent = motivationalQuotes[randomQuoteIndex];
+        }
+
+        // Atualizar badge de conquista
+        function updateAchievementBadge(progress, totalCommissions) {
+            let badgeText = "";
+            let badgeDescription = "";
+            let badgeColor = "";
+            
+            if (progress >= 2) {
+                badgeText = "ESTRELA DO MÊS!";
+                badgeDescription = "Você mais que DOBROU sua meta! ESPETACULAR! ✨";
+                badgeColor = "#ff5722";
+            } else if (progress >= 1.2) {
+                badgeText = "Meta Superada!";
+                badgeDescription = "Você superou sua meta em 20% ou mais!";
+                badgeColor = "#ff9800";
+            } else if (progress >= 1) {
+                badgeText = "Meta Alcançada!";
+                badgeDescription = "Parabéns! Você atingiu sua meta mensal.";
+                badgeColor = "#4caf50";
+            } else if (progress >= 0.75) {
+                badgeText = "Quase Lá!";
+                badgeDescription = "Falta pouco para alcançar sua meta. Continue!";
+                badgeColor = "#8bc34a";
+            } else if (progress >= 0.5) {
+                badgeText = "Bom Trabalho";
+                badgeDescription = "Você já está na metade do caminho. Continue assim!";
+                badgeColor = "#cddc39";
+            } else if (progress >= 0.25) {
+                badgeText = "Em Progresso";
+                badgeDescription = "Você já começou sua jornada. Mantenha o foco!";
+                badgeColor = "#ffeb3b";
+            } else {
+                badgeText = "Meta Definida";
+                badgeDescription = "Estabeleça uma meta para começar sua jornada";
+                badgeColor = "#9e9e9e";
+            }
+            
+            achievementBadge.innerHTML = `
+                <div class="badge-icon" style="background-color: ${badgeColor}">★</div>
+                <div>
+                    <strong>${badgeText}</strong>
+                    <p>${badgeDescription}</p>
+                </div>
+            `;
+        }
+
+        // Calcular totais
+        function calculateTotals() {
+            let primaryTotal = 0;
+            let secondaryTotal = 0;
+            let complementaryTotal = 0;
+            let totalCommissions = 0;
+            
+            // Calcular comissões para cada serviço
+            for (let i = 0; i < sliders.length; i++) {
+                const quantity = parseInt(sliders[i].value);
+                const service = services[i];
+                const commission = service.price * service.commission * quantity;
+                
+                if (i < 2) { // Serviços principais
+                    primaryTotal += commission;
+                } else if (i < 5) { // Serviços secundários (60%)
+                    secondaryTotal += commission;
+                } else { // Serviços complementares
+                    complementaryTotal += commission;
+                }
+                
+                totalCommissions += commission;
+            }
+            
+            // Atualizar exibição
+            primaryTotalEl.textContent = formatCurrency(primaryTotal);
+            secondaryTotalEl.textContent = formatCurrency(secondaryTotal);
+            complementaryTotalEl.textContent = formatCurrency(complementaryTotal);
+            totalCommissionsEl.textContent = formatCurrency(totalCommissions);
+            
+            // Atualizar comparação com meta
+            const goal = parseFloat(monthlyGoalInput.value);
+            goalDisplayEl.textContent = formatCurrency(goal).replace('R$', '').trim();
+            
+            const difference = totalCommissions - goal;
+            differenceDisplayEl.textContent = formatCurrency(difference);
+            
+            if (difference >= 0) {
+                differenceDisplayEl.className = 'comparison-value positive';
+            } else {
+                differenceDisplayEl.className = 'comparison-value negative';
+            }
+            
+            // Atualizar barra de progresso
+            const progress = totalCommissions / goal;
+            const progressPercent = Math.min(progress * 100, 200); // Limitar visualmente a 200%
+            
+            progressFill.style.width = `${progressPercent}%`;
+            progressPercentage.textContent = `${Math.round(progress * 100)}%`;
+            
+            // Atualizar mensagens motivacionais e badges
+            updateMotivationalMessage(progress);
+            updateAchievementBadge(progress, totalCommissions);
+            
+            // Atualizar sugestões
+            goalExplanationEl.textContent = formatCurrency(goal).replace('R$', '').trim();
+            
+            if (difference < 0) {
+                const needed = Math.abs(difference);
+                const designCount = Math.ceil(needed / (services[2].price * services[2].commission));
+                const comboCount = Math.ceil(needed / (services[3].price * services[3].commission));
+                
+                suggestionDesignEl.textContent = designCount;
+                suggestionComboEl.textContent = comboCount;
+            } else {
+                suggestionDesignEl.textContent = "0";
+                suggestionComboEl.textContent = "0";
+            }
+        }
+
+        // Atualizar quantidade exibida quando o slider muda
+        function updateQuantityDisplay(sliderIndex) {
+            quantityDisplays[sliderIndex].textContent = sliders[sliderIndex].value;
+        }
+
+        // Resetar calculadora para valores iniciais
+        function resetCalculator() {
+            monthlyGoalInput.value = initialValues.monthlyGoal;
+            
+            for (let i = 0; i < sliders.length; i++) {
+                sliders[i].value = initialValues.sliders[i];
+                updateQuantityDisplay(i);
+            }
+            
+            calculateTotals();
+            updateDailyGoal();
+            
+            // Mostrar mensagem de confirmação
+            alert("Calculadora reiniciada com sucesso! Pronta para uma nova simulação.");
+        }
+
+        // Zerar apenas os sliders
+        function resetSliders() {
+            for (let i = 0; i < sliders.length; i++) {
+                sliders[i].value = 0;
+                updateQuantityDisplay(i);
+            }
+            
+            calculateTotals();
+            
+            // Mostrar mensagem de confirmação
+            alert("Sliders zerados com sucesso! Sua meta mensal foi mantida.");
+        }
+
+        // Salvar simulação atual
+        function saveSimulation() {
+            const simulationData = {
+                monthlyGoal: monthlyGoalInput.value,
+                services: []
+            };
+            
+            for (let i = 0; i < sliders.length; i++) {
+                simulationData.services.push({
+                    id: services[i].id,
+                    quantity: sliders[i].value
+                });
+            }
+            
+            // Em uma implementação real, isso seria salvo em um servidor
+            // Por enquanto, vamos apenas salvar no localStorage
+            localStorage.setItem('savedSimulation', JSON.stringify(simulationData));
+            
+            alert("Simulação salva com sucesso! Você pode recuperá-la posteriormente.");
+        }
+
+        // Carregar simulação salva
+        function loadSavedSimulation() {
+            const saved = localStorage.getItem('savedSimulation');
+            if (saved) {
+                const simulationData = JSON.parse(saved);
+                
+                monthlyGoalInput.value = simulationData.monthlyGoal;
+                
+                for (let i = 0; i < sliders.length; i++) {
+                    const serviceData = simulationData.services.find(s => s.id === services[i].id);
+                    if (serviceData) {
+                        sliders[i].value = serviceData.quantity;
+                        updateQuantityDisplay(i);
+                    }
+                }
+                
+                calculateTotals();
+                updateDailyGoal();
+                alert("Simulação carregada com sucesso!");
+            } else {
+                alert("Nenhuma simulação salva encontrada.");
+            }
+        }
+
+        // Exportar para imagem
+        function exportToImage() {
+            const exportContainer = document.getElementById('export-container');
+            
+            // Adicionar um pequeno atraso para garantir que a UI esteja totalmente renderizada
+            setTimeout(() => {
+                html2canvas(exportContainer, {
+                    scale: 2, // Aumenta a resolução da imagem
+                    useCORS: true,
+                    logging: false
+                }).then(canvas => {
+                    // Converter canvas para imagem
+                    const image = canvas.toDataURL('image/png');
+                    
+                    // Criar um link para download
+                    const link = document.createElement('a');
+                    link.href = image;
+                    link.download = 'minha-simulacao-de-ganhos.png';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // Mostrar mensagem de sucesso
+                    exportNotice.style.display = 'block';
+                    setTimeout(() => {
+                        exportNotice.style.display = 'none';
+                    }, 5000);
+                }).catch(err => {
+                    console.error('Erro ao exportar imagem:', err);
+                    alert('Ocorreu um erro ao exportar a imagem. Tente novamente.');
+                });
+            }, 500);
+        }
+
+        // Inicializar eventos
+        function initializeEvents() {
+            // Atualizar quando qualquer slider muda
+            sliders.forEach((slider, index) => {
+                slider.addEventListener('input', () => {
+                    updateQuantityDisplay(index);
+                    calculateTotals();
+                });
+            });
+            
+            // Atualizar quando a meta muda
+            monthlyGoalInput.addEventListener('input', () => {
+                calculateTotals();
+                updateDailyGoal();
+            });
+            
+            // Botão de refresh
+            refreshBtn.addEventListener('click', resetCalculator);
+            
+            // Botão de zerar sliders
+            resetSlidersBtn.addEventListener('click', resetSliders);
+            
+            // Botão de salvar
+            saveBtn.addEventListener('click', saveSimulation);
+            
+            // Botão de exportar
+            exportBtn.addEventListener('click', exportToImage);
+            
+            // Calcular totais iniciais
+            calculateTotals();
+            updateDailyGoal();
+        }
+
+        // Inicializar a calculadora
+        initializeEvents();
+    </script>
+</body>
+</html>
